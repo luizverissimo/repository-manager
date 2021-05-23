@@ -30,14 +30,14 @@ app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
   const { title, url, techs } = request.body;
   if (!validate(id))
-    return response.status(404).json({ error: "User id invalid!" });
+    return response.status(400).json({ error: "User id invalid!" });
 
   const indexFound = repositories.findIndex(
     (repository) => repository.uuid === id
   );
 
   if (indexFound < 0)
-    return response.status(404).json({ error: "User not found!" });
+    return response.status(400).json({ error: "User not found!" });
 
   if (title) repositories[indexFound].title = title;
   if (url) repositories[indexFound].url = url;
@@ -57,7 +57,7 @@ app.delete("/repositories/:id", (request, response) => {
   );
 
   if (indexFound < 0)
-    return response.status(404).json({ error: "User not found!" });
+    return response.status(400).json({ error: "User not found!" });
 
   repositories.pop(indexFound);
 
@@ -68,14 +68,14 @@ app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params;
 
   if (!validate(id))
-    return response.status(404).json({ error: "User id invalid!" });
+    return response.status(400).json({ error: "User id invalid!" });
 
   const indexFound = repositories.findIndex(
     (repository) => repository.uuid === id
   );
 
   if (indexFound < 0)
-    return response.status(404).json({ error: "User not found!" });
+    return response.status(400).json({ error: "User not found!" });
 
   const likes = repositories[indexFound].likes + 1;
   console.log(likes);

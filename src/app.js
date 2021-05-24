@@ -17,9 +17,9 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
   const { title, url, techs } = request.body;
-  const uuid = uuidv4();
+  const id = uuidv4();
   const likes = 0;
-  const newRepositories = { uuid, title, url, techs, likes };
+  const newRepositories = { id, title, url, techs, likes };
 
   repositories.push(newRepositories);
 
@@ -33,7 +33,7 @@ app.put("/repositories/:id", (request, response) => {
     return response.status(400).json({ error: "User id invalid!" });
 
   const indexFound = repositories.findIndex(
-    (repository) => repository.uuid === id
+    (repository) => repository.id === id
   );
 
   if (indexFound < 0)
@@ -50,10 +50,10 @@ app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
   if (!validate(id))
-    return response.status(404).json({ error: "User id invalid!" });
+    return response.status(400).json({ error: "User id invalid!" });
 
   const indexFound = repositories.findIndex(
-    (repository) => repository.uuid === id
+    (repository) => repository.id === id
   );
 
   if (indexFound < 0)
@@ -71,7 +71,7 @@ app.post("/repositories/:id/like", (request, response) => {
     return response.status(400).json({ error: "User id invalid!" });
 
   const indexFound = repositories.findIndex(
-    (repository) => repository.uuid === id
+    (repository) => repository.id === id
   );
 
   if (indexFound < 0)
@@ -81,7 +81,7 @@ app.post("/repositories/:id/like", (request, response) => {
   console.log(likes);
   repositories[indexFound].likes = likes;
 
-  response.send(repositories[indexFound]);
+  response.send({ likes: repositories[indexFound].likes });
 });
 
 module.exports = app;
